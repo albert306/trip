@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import de.awolf.trip_compose.ui.theme.AppTheme
 
 @Preview(showBackground = true)
@@ -42,11 +43,13 @@ fun HomeScreen() {
     var searchText by remember { mutableStateOf("") }
 
     Column(
+        verticalArrangement = Arrangement.spacedBy((-10).dp),
         modifier = Modifier
             .fillMaxSize()
     ) {
         Box(
             modifier = Modifier
+                .zIndex(2f) //makes the top bar appear on top of stoplist
                 .fillMaxWidth()
                 .height(100.dp)
                 .clip(RoundedCornerShape(0.dp, 0.dp, 24.dp, 24.dp))
@@ -132,7 +135,9 @@ fun HomeScreen() {
         }
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .zIndex(1f)
+                .fillMaxSize(),
         ) {
             items(20) {
                 Text(
