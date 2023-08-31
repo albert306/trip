@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import de.awolf.trip_compose.ui.components.StopView
 import de.awolf.trip_compose.ui.theme.AppTheme
 
 @Preview(showBackground = true)
@@ -140,11 +141,7 @@ fun HomeScreen() {
                 .fillMaxSize(),
         ) {
             items(20) {
-                Text(
-                    text = "<stop-name>",
-                    modifier = Modifier
-                        .padding(12.dp)
-                )
+                StopView(stopName = "Campingplatz Mockritz", stopRegion = "Dresden", stopIsFavourite = false)
             }
         }
     }
