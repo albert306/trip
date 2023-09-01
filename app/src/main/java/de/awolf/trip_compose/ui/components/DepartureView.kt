@@ -20,7 +20,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.awolf.trip_compose.data.models.Departure
+import de.awolf.trip_compose.data.models.Mode
 import de.awolf.trip_compose.ui.theme.AppTheme
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Preview(showBackground = true)
 @Composable
@@ -30,23 +35,24 @@ private fun Preview() {
 //            modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            DepartureView(lineNumber = "9", direction = "Prohlis", sheduledTime = "09:41", eta = 6)
+            // Example TimeStamps
+            val realTime = LocalDateTime.ofInstant(
+                Instant.ofEpochMilli(1693583700000),
+                ZoneId.systemDefault()
+            ).toLocalTime()
+
+            val sheduledTime = LocalDateTime.ofInstant(
+                Instant.ofEpochMilli(1693583160000),
+                ZoneId.systemDefault()
+            ).toLocalTime()
+            DepartureView(Departure(id = "", lineNumber = "9", lineDirection = "Prohlis", mode = Mode.TRAM, sheduledTime = sheduledTime, realTime = realTime))
         }
     }
 }
 
-@Suppress("UNUSED_PARAMETER") // hardcoded version doesnt use all potential parameters
 @Composable
 fun DepartureView(
-    lineNumber: String,
-    direction: String,
-    platform: String? = "-1",
-    mode: String? = "-1",
-    eta: Int,
-    sheduledTime: String,
-    realTime: String? = sheduledTime,
-    stateDescription: String = "pünktlich",
-    routeChanges: List<String>? = null,
+    departure: Departure
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -60,13 +66,13 @@ fun DepartureView(
                 .width(40.dp)
             ) {
             Text(
-                text = lineNumber,
+                text = departure.lineNumber,
                 fontSize = 18.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
                 fontWeight = FontWeight(500),
                 modifier = Modifier
-                    .background(color = Color.Red, shape = RoundedCornerShape(4.dp))
+                    .background(color = departure.mode.getColor(), shape = RoundedCornerShape(4.dp))
                     .padding(horizontal = 4.dp, vertical = 0.dp)
             )
         }
@@ -79,7 +85,7 @@ fun DepartureView(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = direction,
+                    text = departure.lineDirection,
                     fontSize = 20.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 1,
@@ -87,7 +93,7 @@ fun DepartureView(
                     modifier = Modifier.weight(1f),
                 )
                 Text(
-                    text = eta.toString() + " min",
+                    text = departure.getETA().toString() + " min",
                     fontSize = 20.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 1,
@@ -100,7 +106,7 @@ fun DepartureView(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = sheduledTime,
+                    text = departure.sheduledTime.toString(),
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight(200),
@@ -112,15 +118,28 @@ fun DepartureView(
                     fontWeight = FontWeight(50),
                     modifier = Modifier.padding(horizontal = 8.dp),
                 )
+
+                val delay = departure.getDelay()
+                var stateDescription = "pünktlich"
+                var stateDescriptionColor = Color.Green
+                if (delay > 0) {
+                    stateDescription = "+ " + delay.toString()
+                    stateDescriptionColor = Color.Red
+                }
+                if (delay < 0) {
+                    stateDescription = delay.toString()
+                    stateDescriptionColor = Color.Blue
+                }
+
                 Text(
                     text = stateDescription,
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = stateDescriptionColor,
                     fontWeight = FontWeight(200),
 //                    modifier = Modifier.padding(horizontal = 8.dp),
                 )
                 Text(
-                    text = sheduledTime,
+                    text = departure.realTime.toString(),
                     textAlign = TextAlign.End,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onBackground,

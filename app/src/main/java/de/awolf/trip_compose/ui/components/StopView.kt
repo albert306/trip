@@ -1,9 +1,11 @@
 package de.awolf.trip_compose.ui.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,7 +23,7 @@ import de.awolf.trip_compose.ui.theme.AppTheme
 
 @Preview(showBackground = true)
 @Composable
-fun Preview() {
+private fun Preview() {
     AppTheme {
         Surface(
 //            modifier = Modifier.fillMaxSize(),
@@ -52,16 +54,21 @@ fun StopView(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
     ) {
 
-        Icon(
-            painter = icon,
-            contentDescription = description,
-            tint = MaterialTheme.colorScheme.primary,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(start = 8.dp, end = 12.dp)
-        )
+                .width(40.dp)
+        ) {
+            Icon(
+                painter = icon,
+                contentDescription = description,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .size(24.dp)
+            )
+        }
         Column() {
             Text(
                 text = stopName,

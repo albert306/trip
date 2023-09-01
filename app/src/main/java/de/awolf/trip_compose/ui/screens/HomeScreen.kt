@@ -27,7 +27,7 @@ import de.awolf.trip_compose.ui.theme.AppTheme
 
 @Preview(showBackground = true)
 @Composable
-fun Preview() {
+private fun Preview() {
     AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -136,12 +136,13 @@ fun HomeScreen() {
         }
 
         LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .zIndex(1f)
                 .fillMaxSize(),
         ) {
             items(20) {
-                StopView(stopName = "Campingplatz Mockritz", stopRegion = "Dresden", stopIsFavourite = false)
+                StopView(stopName = "Campingplatz Mockritz", stopRegion = "Dresden", stopIsFavourite = true)
             }
         }
     }
