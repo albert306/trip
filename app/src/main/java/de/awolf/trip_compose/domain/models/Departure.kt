@@ -1,6 +1,7 @@
-package de.awolf.trip_compose.data.models
+package de.awolf.trip_compose.domain.models
 
 import java.time.Duration
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @Suppress("UNUSED")
@@ -8,20 +9,25 @@ class Departure(
     val id: String,
     val lineNumber: String,
     val lineDirection: String,
-    val platform: Platform? = null,
+    val platform: Platform,
     val mode: Mode,
-    val sheduledTime: LocalTime,
-    val realTime: LocalTime = sheduledTime,
-    val state: State? = null,
-    val routeChanges: List<String>? = null,
-    val diva: Diva? = null,
-) : Comparable<Departure>{
+    val sheduledTime: LocalDateTime,
+    val realTime: LocalDateTime,
+    val state: State,
+    val routeChanges: List<String>,
+    val diva: Diva,
+) : Comparable<Departure> {
 
-    @Suppress("UNUSED_PARAMETER")
-    enum class State(rawValue: String = "Unknown") {
+    enum class State(val rawValue: String = "Unknown") {
         ONTIME("InTime"),
         DELAYED("Delayed"),
-        UNKNOWN("Unknown"),
+        UNKNOWN("Unknown");
+
+        companion object {
+            fun fromString(value: String): State {
+                return State.values().find { it.rawValue == value } ?: UNKNOWN
+            }
+        }
     }
 
     fun getETA(): Long {
@@ -37,6 +43,4 @@ class Departure(
     override fun compareTo(other: Departure): Int {
         return realTime.compareTo(other.realTime)
     }
-
-
 }

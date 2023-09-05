@@ -1,4 +1,4 @@
-package de.awolf.trip_compose.data.models
+package de.awolf.trip_compose.domain.models
 
 @Suppress("UNUSED")
 class Stop(

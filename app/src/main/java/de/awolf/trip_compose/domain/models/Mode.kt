@@ -1,8 +1,8 @@
-package de.awolf.trip_compose.data.models
+package de.awolf.trip_compose.domain.models
 
 import androidx.compose.ui.graphics.Color
 
-enum class Mode(private val rawValue: String) {
+enum class Mode(val rawValue: String) {
     TRAM("Tram"),
     CITYBUS("CityBus"),
     INTERCITYBUS("IntercityBus"),
@@ -11,22 +11,27 @@ enum class Mode(private val rawValue: String) {
     TRAIN("Train"),
     CABLEWAY("Cableway"),
     FERRY("Ferry"),
-    HAILEDSHAREDTAXI("HailedSharedTaxi");
+    HAILEDSHAREDTAXI("HailedSharedTaxi"),
+    UNKNOWN("Unknown");
 
     companion object {
         @Suppress("UNUSED")
-        fun getAll(): List<Mode> {
+        fun getAll(): List<String> {
             return listOf(
-                TRAM,
-                CITYBUS,
-                INTERCITYBUS,
-                PLUSBUS,
-                SUBURBANRAILWAY,
-                TRAIN,
-                CABLEWAY,
-                FERRY,
-                HAILEDSHAREDTAXI
+                TRAM.rawValue,
+                CITYBUS.rawValue,
+                INTERCITYBUS.rawValue,
+                PLUSBUS.rawValue,
+                SUBURBANRAILWAY.rawValue,
+                TRAIN.rawValue,
+                CABLEWAY.rawValue,
+                FERRY.rawValue,
+                HAILEDSHAREDTAXI.rawValue
             )
+        }
+
+        fun fromString(value: String): Mode {
+            return values().find { it.rawValue == value } ?: UNKNOWN
         }
     }
 

@@ -20,8 +20,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import de.awolf.trip_compose.data.models.Departure
-import de.awolf.trip_compose.data.models.Mode
+import de.awolf.trip_compose.domain.models.Departure
+import de.awolf.trip_compose.domain.models.Diva
+import de.awolf.trip_compose.domain.models.Mode
+import de.awolf.trip_compose.domain.models.Platform
 import de.awolf.trip_compose.ui.theme.AppTheme
 import java.time.Instant
 import java.time.LocalDateTime
@@ -39,13 +41,13 @@ private fun Preview() {
             val realTime = LocalDateTime.ofInstant(
                 Instant.ofEpochMilli(1693583700000),
                 ZoneId.systemDefault()
-            ).toLocalTime()
+            )
 
             val sheduledTime = LocalDateTime.ofInstant(
                 Instant.ofEpochMilli(1693583160000),
                 ZoneId.systemDefault()
-            ).toLocalTime()
-            DepartureView(Departure(id = "", lineNumber = "9", lineDirection = "Prohlis", mode = Mode.TRAM, sheduledTime = sheduledTime, realTime = realTime))
+            )
+            DepartureView(Departure(id = "", lineNumber = "9", lineDirection = "Prohlis", mode = Mode.TRAM, sheduledTime = sheduledTime, realTime = realTime, state = Departure.State.DELAYED, platform = Platform("track", "8"), diva = Diva("9", "vvo"), routeChanges = emptyList()))
         }
     }
 }
