@@ -9,9 +9,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
-import de.awolf.trip_compose.data.remote.VvoService
 import de.awolf.trip_compose.data.remote.mappers.toDeparturesWrapper
+import de.awolf.trip_compose.data.remote.mappers.toListOfStops
 import de.awolf.trip_compose.domain.models.DeparturesWrapper
+import de.awolf.trip_compose.domain.models.Stop
+import de.awolf.trip_compose.domain.repository.VvoService
 import de.awolf.trip_compose.domain.util.Resource
 import de.awolf.trip_compose.ui.theme.AppTheme
 import java.time.LocalDateTime
@@ -26,17 +28,33 @@ class MainActivity : ComponentActivity() {
             val departures = produceState<DeparturesWrapper?>(
                 initialValue = null,
                 producer = {
-                    value = when (val result = vvoService.postDepartureMonitor(
-                            stopId = "33000028",
-                            time = LocalDateTime.now().plusHours(8)
-                        )) {
-                            is Resource.Success -> {
-                                result.data?.toDeparturesWrapper()
-                            }
-                            is Resource.Error -> {
-                                null
-                            }
+                    value = when (val result = vvoService.monitorStop(
+                        stopId = "33000028",
+                        time = LocalDateTime.now().plusHours(8)
+                    )) {
+                        is Resource.Success -> {
+                            result.data?.toDeparturesWrapper()
                         }
+                        is Resource.Error -> {
+                            null
+                        }
+                    }
+                }
+            )
+
+            val stopFinder = produceState<List<Stop>?>(
+                initialValue = null,
+                producer = {
+                    value = when (val result = vvoService.getStopByName(
+                        query = "hbf",
+                    )) {
+                        is Resource.Success -> {
+                            result.data?.toListOfStops()
+                        }
+                        is Resource.Error -> {
+                            null
+                        }
+                    }
                 }
             )
 
@@ -47,6 +65,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Text(text = departures.value.toString())
+                    Text(text = stopFinder.value.toString())
                 }
             }
         }

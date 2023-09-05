@@ -1,4 +1,4 @@
-package de.awolf.trip_compose.data.remote.dto
+package de.awolf.trip_compose.data.remote.dto.stop_monitor
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
