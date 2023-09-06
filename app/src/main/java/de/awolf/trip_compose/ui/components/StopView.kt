@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.awolf.trip_compose.R
+import de.awolf.trip_compose.domain.models.Stop
 import de.awolf.trip_compose.ui.theme.AppTheme
 
 @Preview(showBackground = true)
@@ -29,16 +30,16 @@ private fun Preview() {
 //            modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            StopView(stopName = "Campingplatz Mockritz", stopRegion = "Dresden", stopIsFavourite = false)
+            StopView(stop = Stop("33000028", "Haupbahnhof", "Dresden"), stopIsFavourite = false)
         }
     }
 }
 
 @Composable
 fun StopView(
-    stopName: String,
-    stopRegion: String,
+    stop: Stop,
     stopIsFavourite: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     // Default: no favourite
     var icon = painterResource(id = R.drawable.baseline_star_outline_24)
@@ -54,6 +55,7 @@ fun StopView(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .then(modifier)
     ) {
 
         Box(
@@ -71,14 +73,14 @@ fun StopView(
         }
         Column() {
             Text(
-                text = stopName,
+                text = stop.name,
                 fontSize = 20.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
                 fontWeight = FontWeight(400),
             )
             Text(
-                text = stopRegion,
+                text = stop.region,
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
