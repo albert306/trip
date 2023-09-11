@@ -1,4 +1,4 @@
-package de.awolf.trip_compose.ui.components
+package de.awolf.trip_compose.presentation.home_screen.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.awolf.trip_compose.R
 import de.awolf.trip_compose.domain.models.Stop
+import de.awolf.trip_compose.presentation.util.clickableWithoutRipple
 import de.awolf.trip_compose.ui.theme.AppTheme
 
 @Preview(showBackground = true)
@@ -39,7 +40,6 @@ private fun Preview() {
 fun StopView(
     stop: Stop,
     stopIsFavourite: Boolean,
-    modifier: Modifier = Modifier,
 ) {
     // Default: no favourite
     var icon = painterResource(id = R.drawable.baseline_star_outline_24)
@@ -55,7 +55,6 @@ fun StopView(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .then(modifier)
     ) {
 
         Box(
@@ -71,7 +70,12 @@ fun StopView(
                     .size(24.dp)
             )
         }
-        Column() {
+        Column(
+            modifier = Modifier
+                .clickableWithoutRipple {
+                    println("stop ${stop.name} was clicked")
+                }
+        ) {
             Text(
                 text = stop.name,
                 fontSize = 20.sp,

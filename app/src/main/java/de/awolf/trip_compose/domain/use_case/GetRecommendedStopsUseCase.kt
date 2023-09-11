@@ -19,6 +19,7 @@ class GetRecommendedStopsUseCase(
                     result.data!!.toListOfStops()
                 }
                 is Resource.Error -> {
+                    println(result.message)
                     listOf(Stop("33000028", "Hauptbahnhof", "Dresden")) //TODO(get favouriteStops from sharedPreferences)
                 }
             }

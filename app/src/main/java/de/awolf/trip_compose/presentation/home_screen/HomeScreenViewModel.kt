@@ -1,48 +1,56 @@
 package de.awolf.trip_compose.presentation.home_screen
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.awolf.trip_compose.domain.models.Stop
 import de.awolf.trip_compose.domain.use_case.VvoServiceUseCases
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import java.time.LocalDateTime
 
+@Suppress("UNUSED")
 class HomeScreenViewModel(
     private val vvoServiceUseCases: VvoServiceUseCases
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(HomeScreenState())
-    val state: State<HomeScreenState> = _state
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
 
-    var getRecommendedStopsJob: Job? = null
+    private val _isSearching = MutableStateFlow(false)
+    val isSearching = _isSearching.asStateFlow()
 
-    init {
-        getRecommendedStopsJob = viewModelScope.launch {
-            _state.value = state.value.copy(
-                recommendedStops = vvoServiceUseCases.getRecommendedStopsUseCase("")
-            )
+    private val _selectedTime = MutableStateFlow(LocalDateTime.now())
+    val selectedTime = _selectedTime.asStateFlow()
+
+    private val _recommendedStops = MutableStateFlow(listOf<Stop>())
+    @OptIn(FlowPreview::class)
+    val recommendedStops = _searchText
+        .debounce(200L)
+        .onEach { _isSearching.update { true } }
+        .combine(_recommendedStops) { text, _ ->
+            vvoServiceUseCases.getRecommendedStopsUseCase(text)
         }
+        .onEach { _isSearching.update { false } }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            _recommendedStops.value
+        )
+
+
+    fun onSearchTextChange(text: String) {
+        _searchText.value = text
     }
 
-    fun onEvent(event: HomeScreenEvent) {
-        when (event) {
-            is HomeScreenEvent.ChangeSearchBarText -> {
-                _state.value = state.value.copy(
-                    searchBarText = event.newText,
-                )
-                getRecommendedStopsJob?.cancel() //cancel previous api request upon rapid changes in search bar
-                getRecommendedStopsJob = viewModelScope.launch {
-                    _state.value = state.value.copy(
-                        recommendedStops = vvoServiceUseCases.getRecommendedStopsUseCase(event.newText)
-                    )
-                }
-            }
-            is HomeScreenEvent.StartSearch -> {
-                if (_state.value.recommendedStops.isEmpty()) { return }
-
-                _state.value.recommendedStops[0] //TODO(launch activity with this stop)
-            }
-        }
+    fun startSearch() {
+        if (_recommendedStops.value.isEmpty()) { return }
+        _recommendedStops.value[0] //TODO(launch activity with this stop)
     }
 }
