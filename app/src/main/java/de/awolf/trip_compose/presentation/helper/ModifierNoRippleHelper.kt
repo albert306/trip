@@ -1,4 +1,4 @@
-package de.awolf.trip_compose.presentation.util
+package de.awolf.trip_compose.presentation.helper
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

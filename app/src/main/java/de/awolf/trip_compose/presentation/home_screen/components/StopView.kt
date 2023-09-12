@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.awolf.trip_compose.R
 import de.awolf.trip_compose.domain.models.Stop
-import de.awolf.trip_compose.presentation.util.clickableWithoutRipple
+import de.awolf.trip_compose.presentation.helper.clickableWithoutRipple
 import de.awolf.trip_compose.ui.theme.AppTheme
 
 @Preview(showBackground = true)
@@ -31,7 +31,7 @@ private fun Preview() {
 //            modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            StopView(stop = Stop("33000028", "Haupbahnhof", "Dresden"), stopIsFavourite = false)
+            StopView(stop = Stop("33000028", "Haupbahnhof", "Dresden"), stopIsFavourite = false) {}
         }
     }
 }
@@ -40,6 +40,7 @@ private fun Preview() {
 fun StopView(
     stop: Stop,
     stopIsFavourite: Boolean,
+    onClick: () -> Unit
 ) {
     // Default: no favourite
     var icon = painterResource(id = R.drawable.baseline_star_outline_24)
@@ -74,6 +75,7 @@ fun StopView(
             modifier = Modifier
                 .clickableWithoutRipple {
                     println("stop ${stop.name} was clicked")
+                    onClick()
                 }
         ) {
             Text(

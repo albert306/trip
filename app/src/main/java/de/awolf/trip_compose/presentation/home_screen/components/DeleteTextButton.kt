@@ -9,24 +9,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun DeleteTextButton(
     onClick: (query: String) -> Unit,
-    modifier: Modifier = Modifier
+    size: Dp = 24.dp
 ) {
     TextButton(
         onClick = { onClick("") },
         contentPadding = PaddingValues(0.dp),
-        modifier = modifier
-
+        modifier = Modifier
+            .size(size)
     ) {
         Icon(
             imageVector = Icons.Default.Close,
             contentDescription = "delete text",
             tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(size)
         )
     }
 }

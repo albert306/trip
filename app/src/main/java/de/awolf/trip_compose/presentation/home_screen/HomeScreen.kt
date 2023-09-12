@@ -7,8 +7,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import de.awolf.trip_compose.presentation.home_screen.components.SearchCard
 import de.awolf.trip_compose.presentation.home_screen.components.StopView
+import de.awolf.trip_compose.ui.Screen
 
 //@Preview(showBackground = true)
 //@Composable
@@ -25,7 +27,8 @@ import de.awolf.trip_compose.presentation.home_screen.components.StopView
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeScreenViewModel
+    viewModel: HomeScreenViewModel,
+    navController: NavController
 ) {
 
     val searchText by viewModel.searchText.collectAsState()
@@ -44,7 +47,6 @@ fun HomeScreen(
             modifier = Modifier
                 .zIndex(2f)
                 .fillMaxWidth()
-                .height(100.dp)
         )
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -53,12 +55,13 @@ fun HomeScreen(
                 .fillMaxSize(),
         ) {
             item {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(10.dp))
             }
             items(recommendedStops) { stop ->
                 StopView(
                     stop = stop,
                     stopIsFavourite = false,
+                    onClick = { navController.navigate(Screen.StopMonitorScreen.withArgs(stop.id, stop.name, stop.region, "false")) }
                 )
             }
         }

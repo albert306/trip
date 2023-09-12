@@ -1,4 +1,4 @@
-package de.awolf.trip_compose.ui.components
+package de.awolf.trip_compose.presentation.stop_monitor_screen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
