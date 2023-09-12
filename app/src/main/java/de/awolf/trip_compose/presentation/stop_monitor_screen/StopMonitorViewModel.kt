@@ -10,12 +10,21 @@ import kotlinx.coroutines.flow.asStateFlow
 @Suppress("UNUSED")
 class StopMonitorViewModel(
     val stop: Stop,
+    private val queriedTime: Long,
     private val vvoServiceUseCases: VvoServiceUseCases
 ) : ViewModel() {
+
+    private val _isStopInfoCardExpanded = MutableStateFlow(false)
+    val isStopInfoCardExpanded = _isStopInfoCardExpanded.asStateFlow()
 
     private val _isUpdating = MutableStateFlow(false)
     val isUpdating = _isUpdating.asStateFlow()
 
     private val _departures = MutableStateFlow(listOf<Departure>())
     val departures = _departures.asStateFlow()
+
+
+    fun expandStopInfo() {
+        _isStopInfoCardExpanded.value = !_isStopInfoCardExpanded.value
+    }
 }

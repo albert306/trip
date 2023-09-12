@@ -1,4 +1,4 @@
-package de.awolf.trip_compose.presentation
+package de.awolf.trip_compose.presentation.helper
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -7,28 +7,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.navigation.NavController
 import de.awolf.trip_compose.presentation.home_screen.components.SearchCard
 import de.awolf.trip_compose.presentation.home_screen.components.StopView
-import de.awolf.trip_compose.ui.Screen
-
-//@Preview(showBackground = true)
-//@Composable
-//private fun Preview() {
-//    AppTheme {
-//        Surface(
-//            modifier = Modifier.fillMaxSize(),
-//            color = MaterialTheme.colorScheme.background
-//        ) {
-//            HomeScreen()
-//        }
-//    }
-//}
 
 @Composable
 fun HomeScreen(
     viewModel: HomeScreenViewModel,
-    navController: NavController
 ) {
 
     val searchText by viewModel.searchText.collectAsState()
@@ -43,7 +27,7 @@ fun HomeScreen(
         SearchCard(
             searchText = searchText,
             onSearchTextChange = viewModel::onSearchTextChange,
-            onSearchButtonClick = viewModel::startSearch,
+            onSearchButtonClick = { viewModel.startStopMonitor(recommendedStops.firstOrNull()) },
             modifier = Modifier
                 .zIndex(2f)
                 .fillMaxWidth()
@@ -61,7 +45,7 @@ fun HomeScreen(
                 StopView(
                     stop = stop,
                     stopIsFavourite = false,
-                    onClick = { navController.navigate(Screen.StopMonitorScreen.withArgs(stop.id, stop.name, stop.region, "false")) }
+                    onClick = { viewModel.startStopMonitor(stop) }
                 )
             }
         }

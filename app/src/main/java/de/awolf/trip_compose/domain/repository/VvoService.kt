@@ -14,6 +14,7 @@ import io.ktor.client.features.logging.Logging
 import kotlinx.serialization.json.Json
 import java.time.LocalDateTime
 
+//TODO(change return types of VvoService functions to domain models instead of dto)
 interface VvoService {
 
     suspend fun monitorStop(

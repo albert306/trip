@@ -93,7 +93,7 @@ fun SearchCard(
                             Text(
                                 text = "Enter stop name",
                                 color = Color.Gray,
-                                fontSize = 20.sp
+                                fontSize = 22.sp
                             )
                         }
                     }
@@ -107,14 +107,14 @@ fun SearchCard(
                 ),
                 textStyle = TextStyle(
                     color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 20.sp,
+                    fontSize = 22.sp,
                 ),
                 modifier = Modifier
                     .weight(1f)
             )
             DeleteTextButton(
                 onClick = { onSearchTextChange("") },
-                size = 24.dp
+                size = 26.dp
             )
         }
         Box(
