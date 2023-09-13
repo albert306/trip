@@ -2,7 +2,6 @@ package de.awolf.trip_compose.domain.models
 
 import java.time.Duration
 import java.time.LocalDateTime
-import java.time.LocalTime
 
 @Suppress("UNUSED")
 class Departure(
@@ -31,7 +30,7 @@ class Departure(
     }
 
     fun getETA(): Long {
-        val diff = Duration.between(LocalTime.now(), realTime)
+        val diff = Duration.between(LocalDateTime.now(), realTime)
         return diff.toMinutes()
     }
 

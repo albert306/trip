@@ -14,7 +14,9 @@ class GetRecommendedStopsUseCase(
         return if (query.length < 3) {
             listOf(Stop("33000028", "Hauptbahnhof", "Dresden")) //TODO(get favouriteStops from sharedPreferences)
         } else {
-            when (val result = vvoService.getStopByName(query)) {
+            when (val result = vvoService.getStopByName(
+                query = query, // add optional query parameters
+            )) {
                 is Resource.Success -> {
                     result.data!!.toListOfStops()
                 }

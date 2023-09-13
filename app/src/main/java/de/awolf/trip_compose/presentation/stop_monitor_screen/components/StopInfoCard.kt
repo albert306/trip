@@ -16,22 +16,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import de.awolf.trip_compose.domain.models.Stop
 import de.awolf.trip_compose.presentation.helper.clickableWithoutRipple
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun StopInfoCard(
     stop: Stop,
     queriedTime: LocalDateTime,
     isStopInfoCardExpanded: Boolean,
-    expandStopInfo: () -> Unit
+    expandStopInfo: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     Column(
-        modifier = Modifier
-            .zIndex(2f)
+        modifier = modifier
             .fillMaxWidth()
             .clickableWithoutRipple { expandStopInfo() }
             .background(
@@ -69,7 +69,7 @@ fun StopInfoCard(
                     modifier = Modifier.padding(horizontal = 8.dp),
                 )
                 Text(
-                    text = queriedTime.toString(),
+                    text = queriedTime.format(DateTimeFormatter.ofPattern("dd.MM. // HH:mm")),
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight(200),

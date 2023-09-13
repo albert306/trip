@@ -23,7 +23,7 @@ interface VvoService {
         time: LocalDateTime = LocalDateTime.now(),
         isArrival: Boolean = true,
         shorttermchanges: Boolean = true,
-        modeOfTransport: List<String> = Mode.getAll()
+        modeOfTransport: List<String> = Mode.getAllLocal()
     ): Resource<StopMonitorResponseDto>
 
     suspend fun getStopByName(

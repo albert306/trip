@@ -39,7 +39,7 @@ fun HomeScreen(
                 .fillMaxSize(),
         ) {
             item {
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(6.dp))
             }
             items(recommendedStops) { stop ->
                 StopView(

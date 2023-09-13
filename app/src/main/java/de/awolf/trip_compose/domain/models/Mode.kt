@@ -16,14 +16,13 @@ enum class Mode(val rawValue: String) {
 
     companion object {
         @Suppress("UNUSED")
-        fun getAll(): List<String> {
+        fun getAllLocal(): List<String> {
             return listOf(
                 TRAM.rawValue,
                 CITYBUS.rawValue,
                 INTERCITYBUS.rawValue,
                 PLUSBUS.rawValue,
                 SUBURBANRAILWAY.rawValue,
-                TRAIN.rawValue,
                 CABLEWAY.rawValue,
                 FERRY.rawValue,
                 HAILEDSHAREDTAXI.rawValue
