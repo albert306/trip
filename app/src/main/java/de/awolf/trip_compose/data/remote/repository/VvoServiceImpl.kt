@@ -6,9 +6,10 @@ import de.awolf.trip_compose.domain.repository.VvoService
 import de.awolf.trip_compose.data.remote.dto.stop_monitor.StopMonitorResponseDto
 import de.awolf.trip_compose.domain.util.Resource
 import io.ktor.client.HttpClient
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.RedirectResponseException
-import io.ktor.client.features.ServerResponseException
+import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.RedirectResponseException
+import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -49,8 +50,8 @@ class VvoServiceImpl(
             Resource.Success(client.post {
                 url(HttpRoutes.STOP_MONITOR)
                 contentType(ContentType.Application.Json)
-                body = jsonBody
-            })
+                setBody(jsonBody)
+            }.body())
         } catch (e: RedirectResponseException) {
             // 3xx - responses
             println("Error: ${e.response.status.description}")
@@ -91,8 +92,8 @@ class VvoServiceImpl(
             Resource.Success(client.post {
                 url(HttpRoutes.STOP_FINDER)
                 contentType(ContentType.Application.Json)
-                body = jsonBody
-            })
+                setBody(jsonBody)
+            }.body())
         } catch (e: RedirectResponseException) {
             // 3xx - responses
             println("Error: ${e.response.status.description}")

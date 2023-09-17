@@ -7,10 +7,10 @@ import de.awolf.trip_compose.data.remote.repository.VvoServiceImpl
 import de.awolf.trip_compose.domain.util.Resource
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.features.logging.LogLevel
-import io.ktor.client.features.logging.Logging
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import java.time.LocalDateTime
 
@@ -42,8 +42,8 @@ interface VvoService {
                     install(Logging) {
                         level = LogLevel.ALL
                     }
-                    install(JsonFeature) {
-                        serializer = KotlinxSerializer( Json {
+                    install(ContentNegotiation) {
+                        json(Json {
                             ignoreUnknownKeys = true
                             encodeDefaults = true
                         })
