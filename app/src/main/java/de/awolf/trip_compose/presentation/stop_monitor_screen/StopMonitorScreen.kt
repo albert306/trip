@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,7 +20,9 @@ import androidx.compose.ui.zIndex
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import de.awolf.trip_compose.presentation.helper.isFinalItemVisible
 import de.awolf.trip_compose.presentation.stop_monitor_screen.components.DepartureView
+import de.awolf.trip_compose.presentation.stop_monitor_screen.components.ShimmerDepartureItem
 import de.awolf.trip_compose.presentation.stop_monitor_screen.components.StopInfoCard
 import java.time.LocalDateTime
 
@@ -46,6 +50,13 @@ fun StopMonitorScreen(
         )
 
         val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
+        val lazyListState = rememberLazyListState()
+        val isAtBottom = lazyListState.isFinalItemVisible(tolerance = 0)
+        LaunchedEffect(isAtBottom) {
+            if (isAtBottom && !isRefreshing && departures.isNotEmpty()) { //prevent repeated calls
+                viewModel.increaseDepartureCount()
+            }
+        }
 
         SwipeRefresh(
             state = swipeRefreshState,
@@ -60,6 +71,7 @@ fun StopMonitorScreen(
             }
         ) {
             LazyColumn(
+                state = lazyListState,
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
                     .zIndex(0f)
@@ -70,6 +82,11 @@ fun StopMonitorScreen(
                 }
                 items(departures) { departure ->
                     DepartureView(departure)
+                }
+                if (!isRefreshing) {
+                    items(3) {
+                        ShimmerDepartureItem()
+                    }
                 }
             }
         }

@@ -21,7 +21,7 @@ interface VvoService {
         stopId: String,
         limit: Int = 5,
         time: LocalDateTime = LocalDateTime.now(),
-        isArrival: Boolean = true,
+        isArrival: Boolean = false,
         shorttermchanges: Boolean = true,
         modeOfTransport: List<String> = Mode.getAllLocal()
     ): Resource<StopMonitorResponseDto>

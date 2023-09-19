@@ -12,10 +12,10 @@ class GetStopMonitorDeparturesUseCase(
     private val vvoService: VvoService
 ) {
 
-    suspend operator fun invoke(stop: Stop, time: LocalDateTime): List<Departure> {
+    suspend operator fun invoke(stop: Stop, time: LocalDateTime, limit: Int): List<Departure> {
         return when (val result = vvoService.monitorStop(
             stopId = stop.id,
-            limit = 30,
+            limit = limit,
             time = time, // add optional query parameters
         )) {
             is Resource.Success -> {

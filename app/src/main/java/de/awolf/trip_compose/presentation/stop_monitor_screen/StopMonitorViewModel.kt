@@ -1,5 +1,6 @@
 package de.awolf.trip_compose.presentation.stop_monitor_screen
 
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.awolf.trip_compose.domain.models.Departure
@@ -28,6 +29,8 @@ class StopMonitorViewModel(
     private val _departures = MutableStateFlow(listOf<Departure>())
     val departures = _departures.asStateFlow()
 
+    private val departureCount = mutableIntStateOf(30)
+
     init {
         updateDepartures()
     }
@@ -39,9 +42,28 @@ class StopMonitorViewModel(
     fun updateDepartures() {
         viewModelScope.launch {
             _isRefreshing.update { true }
-            _departures.update { vvoServiceUseCases.getStopMonitorDeparturesUseCase(stop, LocalDateTime.now()) }
+            _departures.update {
+                vvoServiceUseCases.getStopMonitorDeparturesUseCase(
+                    stop = stop,
+                    time = LocalDateTime.now(),
+                    limit = departureCount.intValue,
+                    )
+            }
             delay(300)
             _isRefreshing.update { false }
+        }
+    }
+
+    fun increaseDepartureCount() {
+        departureCount.intValue = departureCount.intValue + 20
+        viewModelScope.launch {
+            _departures.update {
+                vvoServiceUseCases.getStopMonitorDeparturesUseCase(
+                    stop = stop,
+                    time = LocalDateTime.now(),
+                    limit = departureCount.intValue,
+                )
+            }
         }
     }
 }
