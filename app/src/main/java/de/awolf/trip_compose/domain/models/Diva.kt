@@ -1,6 +1,10 @@
 package de.awolf.trip_compose.domain.models
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Diva(
-    val number: String,
-    val network: String
+    @SerialName("Number") val number: String,
+    @SerialName("Network") val network: String
 )

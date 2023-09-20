@@ -1,6 +1,10 @@
 package de.awolf.trip_compose.domain.models
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Platform(
-    val type: String,
-    val name: String
+    @SerialName("Type") val type: String,
+    @SerialName("Name") val name: String
 )

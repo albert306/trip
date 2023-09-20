@@ -15,7 +15,6 @@ enum class Mode(val rawValue: String) {
     UNKNOWN("Unknown");
 
     companion object {
-        @Suppress("UNUSED")
         fun getAllLocal(): List<String> {
             return listOf(
                 TRAM.rawValue,

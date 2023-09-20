@@ -1,9 +1,9 @@
 package de.awolf.trip_compose.domain.repository
 
-import de.awolf.trip_compose.data.remote.dto.stop_finder.StopFinderResponseDto
 import de.awolf.trip_compose.domain.models.Mode
-import de.awolf.trip_compose.data.remote.dto.stop_monitor.StopMonitorResponseDto
 import de.awolf.trip_compose.data.remote.repository.VvoServiceImpl
+import de.awolf.trip_compose.domain.models.StopFinderInfo
+import de.awolf.trip_compose.domain.models.StopMonitorInfo
 import de.awolf.trip_compose.domain.util.Resource
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -14,7 +14,6 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import java.time.LocalDateTime
 
-//TODO(change return types of VvoService functions to domain models instead of dto)
 interface VvoService {
 
     suspend fun monitorStop(
@@ -24,15 +23,15 @@ interface VvoService {
         isArrival: Boolean = false,
         shorttermchanges: Boolean = true,
         modeOfTransport: List<String> = Mode.getAllLocal()
-    ): Resource<StopMonitorResponseDto>
+    ): Resource<StopMonitorInfo>
 
     suspend fun getStopByName(
         query: String,
         limit: Int = 15,
         stopsOnly: Boolean = true,
-        regionalOnly: Boolean = false,
+        regionalOnly: Boolean = true,
         stopShortcuts: Boolean = false
-    ): Resource<StopFinderResponseDto>
+    ): Resource<StopFinderInfo>
 
 
     companion object {

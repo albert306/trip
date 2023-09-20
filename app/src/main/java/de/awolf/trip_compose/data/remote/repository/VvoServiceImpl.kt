@@ -4,6 +4,10 @@ import de.awolf.trip_compose.data.remote.HttpRoutes
 import de.awolf.trip_compose.data.remote.dto.stop_finder.StopFinderResponseDto
 import de.awolf.trip_compose.domain.repository.VvoService
 import de.awolf.trip_compose.data.remote.dto.stop_monitor.StopMonitorResponseDto
+import de.awolf.trip_compose.data.remote.mappers.toStopFinderInfo
+import de.awolf.trip_compose.data.remote.mappers.toStopMonitorInfo
+import de.awolf.trip_compose.domain.models.StopFinderInfo
+import de.awolf.trip_compose.domain.models.StopMonitorInfo
 import de.awolf.trip_compose.domain.util.Resource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -31,7 +35,7 @@ class VvoServiceImpl(
         isArrival: Boolean,
         shorttermchanges: Boolean,
         modeOfTransport: List<String>
-    ): Resource<StopMonitorResponseDto> {
+    ): Resource<StopMonitorInfo> {
 
         val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")
 
@@ -46,29 +50,38 @@ class VvoServiceImpl(
             )
         )
 
-        return try {
-            Resource.Success(client.post {
+        var result: StopMonitorResponseDto? = null
+        var errorMessage = ""
+        try {
+            result = client.post {
                 url(HttpRoutes.STOP_MONITOR)
                 contentType(ContentType.Application.Json)
                 setBody(jsonBody)
-            }.body())
+            }.body()
         } catch (e: RedirectResponseException) {
             // 3xx - responses
             println("Error: ${e.response.status.description}")
-            Resource.Error(e.response.status.description)
+            errorMessage = e.response.status.description
         } catch (e: ClientRequestException) {
             // 4xx - responses
             println("Error: ${e.response.status.description}")
-            Resource.Error(e.response.status.description)
+            errorMessage = e.response.status.description
         } catch (e: ServerResponseException) {
             // 5xx - responses
             println("Error: ${e.response.status.description}")
-            Resource.Error(e.response.status.description)
+            errorMessage = e.response.status.description
         } catch (e: Exception) {
             println("Error: ${e.message}")
-            Resource.Error("unknown error")
+            errorMessage = "unknown error (most likely json parse error)"
+        }
+        return when (result == null) {
+            true -> Resource.Error(errorMessage)
+            false -> Resource.Success(result.toStopMonitorInfo())
         }
     }
+
+
+
 
     override suspend fun getStopByName(
         query: String,
@@ -76,7 +89,7 @@ class VvoServiceImpl(
         stopsOnly: Boolean,
         regionalOnly: Boolean,
         stopShortcuts: Boolean
-    ): Resource<StopFinderResponseDto> {
+    ): Resource<StopFinderInfo> {
 
         val jsonBody = JsonObject(
             mapOf(
@@ -88,27 +101,33 @@ class VvoServiceImpl(
             )
         )
 
-        return try {
-            Resource.Success(client.post {
+        var result: StopFinderResponseDto? = null
+        var errorMessage = ""
+        try {
+            result = client.post {
                 url(HttpRoutes.STOP_FINDER)
                 contentType(ContentType.Application.Json)
                 setBody(jsonBody)
-            }.body())
+            }.body()
         } catch (e: RedirectResponseException) {
             // 3xx - responses
             println("Error: ${e.response.status.description}")
-            Resource.Error(e.response.status.description)
+            errorMessage = e.response.status.description
         } catch (e: ClientRequestException) {
             // 4xx - responses
             println("Error: ${e.response.status.description}")
-            Resource.Error(e.response.status.description)
+            errorMessage = e.response.status.description
         } catch (e: ServerResponseException) {
             // 5xx - responses
             println("Error: ${e.response.status.description}")
-            Resource.Error(e.response.status.description)
+            errorMessage = e.response.status.description
         } catch (e: Exception) {
             println("Error: ${e.message}")
-            Resource.Error("unknown error")
+            errorMessage = "unknown error (most likely json parse error)"
+        }
+        return when (result == null) {
+            true -> Resource.Error(errorMessage)
+            false -> Resource.Success(result.toStopFinderInfo())
         }
     }
 }

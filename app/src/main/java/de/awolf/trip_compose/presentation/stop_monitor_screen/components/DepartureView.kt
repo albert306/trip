@@ -52,8 +52,8 @@ private fun Preview() {
                 ZoneId.systemDefault()
             )
             Column() {
-                DepartureView(Departure(id = "", lineNumber = "360", lineDirection = "Prohlis", mode = Mode.PLUSBUS, sheduledTime = sheduledTime, realTime = realTime, state = Departure.State.DELAYED, platform = Platform("track", "8"), diva = Diva("9", "vvo"), routeChanges = emptyList()))
-                DepartureView(Departure(id = "", lineNumber = "9", lineDirection = "Prohlis", mode = Mode.TRAM, sheduledTime = sheduledTime, realTime = realTime, state = Departure.State.DELAYED, platform = Platform("track", "8"), diva = Diva("9", "vvo"), routeChanges = emptyList()))
+                DepartureView(Departure(id = "", lineNumber = "360", lineDirection = "Prohlis", mode = Mode.PLUSBUS, sheduledTime = sheduledTime, realTime = realTime, departureState = Departure.DepartureState.DELAYED, platform = Platform("track", "8"), diva = Diva("9", "vvo"), routeChanges = emptyList()))
+                DepartureView(Departure(id = "", lineNumber = "9", lineDirection = "Prohlis", mode = Mode.TRAM, sheduledTime = sheduledTime, realTime = realTime, departureState = Departure.DepartureState.DELAYED, platform = Platform("track", "8"), diva = Diva("9", "vvo"), routeChanges = emptyList()))
             }
         }
     }
@@ -136,21 +136,21 @@ fun DepartureView(
                 )
 
                 val delay = departure.getDelay()
-                var stateDescription = "pünktlich"
-                var stateDescriptionColor = Color.Green
+                var departureStateDescription = "pünktlich"
+                var departureStateDescriptionColor = Color.Green
                 if (delay > 0) {
-                    stateDescription = "+ " + delay.toString()
-                    stateDescriptionColor = Color.Red
+                    departureStateDescription = "+ " + delay.toString()
+                    departureStateDescriptionColor = Color.Red
                 }
                 if (delay < 0) {
-                    stateDescription =  "- " + delay.absoluteValue.toString()
-                    stateDescriptionColor = Color.Blue
+                    departureStateDescription =  "- " + delay.absoluteValue.toString()
+                    departureStateDescriptionColor = Color.Blue
                 }
 
                 Text(
-                    text = stateDescription,
+                    text = departureStateDescription,
                     fontSize = 14.sp,
-                    color = stateDescriptionColor,
+                    color = departureStateDescriptionColor,
                     fontWeight = FontWeight(300),
 //                    modifier = Modifier.padding(horizontal = 8.dp),
                 )

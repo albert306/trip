@@ -3,28 +3,27 @@ package de.awolf.trip_compose.domain.models
 import java.time.Duration
 import java.time.LocalDateTime
 
-@Suppress("UNUSED")
-class Departure(
+data class Departure(
     val id: String,
     val lineNumber: String,
     val lineDirection: String,
-    val platform: Platform,
+    val platform: Platform?,
     val mode: Mode,
     val sheduledTime: LocalDateTime,
     val realTime: LocalDateTime,
-    val state: State,
+    val departureState: DepartureState,
     val routeChanges: List<String>,
-    val diva: Diva,
+    val diva: Diva?,
 ) : Comparable<Departure> {
 
-    enum class State(val rawValue: String = "Unknown") {
-        ONTIME("InTime"),
+    enum class DepartureState(val rawValue: String = "Unknown") {
+        INTIME("InTime"),
         DELAYED("Delayed"),
         UNKNOWN("Unknown");
 
         companion object {
-            fun fromString(value: String): State {
-                return State.values().find { it.rawValue == value } ?: UNKNOWN
+            fun fromString(value: String): DepartureState {
+                return DepartureState.values().find { it.rawValue == value } ?: UNKNOWN
             }
         }
     }

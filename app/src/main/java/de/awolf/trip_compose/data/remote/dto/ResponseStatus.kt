@@ -4,7 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class StatusDto(
+data class ResponseStatus(
     @SerialName("Code") val code: String,
-    @SerialName("Message") val message: String? = null,
-)
+    @SerialName("Message") val message: String = "",
+) {
+    fun isOk(): Boolean {
+        return code == "Ok"
+    }
+}

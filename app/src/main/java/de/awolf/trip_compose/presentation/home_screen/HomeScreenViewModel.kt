@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import de.awolf.trip_compose.domain.models.Stop
 import de.awolf.trip_compose.domain.use_case.VvoServiceUseCases
+import de.awolf.trip_compose.domain.util.Resource
 import de.awolf.trip_compose.ui.Screen
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +40,15 @@ class HomeScreenViewModel(
         .debounce(100L)
         .onEach { _isSearching.update { true } }
         .combine(_recommendedStops) { text, _ ->
-            vvoServiceUseCases.getRecommendedStopsUseCase(text)
+            when (val recommendedStopsResource = vvoServiceUseCases.getRecommendedStopsUseCase(text)) {
+                is Resource.Error -> {
+                    println("TOAST: " + recommendedStopsResource.message)
+                    emptyList()
+                }
+                is Resource.Success -> {
+                    recommendedStopsResource.data!!
+                }
+            }
         }
         .onEach { _isSearching.update { false } }
         .stateIn(

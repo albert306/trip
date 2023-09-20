@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import de.awolf.trip_compose.domain.models.Departure
 import de.awolf.trip_compose.domain.models.Stop
 import de.awolf.trip_compose.domain.use_case.VvoServiceUseCases
+import de.awolf.trip_compose.domain.util.Resource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -43,11 +44,20 @@ class StopMonitorViewModel(
         viewModelScope.launch {
             _isRefreshing.update { true }
             _departures.update {
-                vvoServiceUseCases.getStopMonitorDeparturesUseCase(
+                val stopMonitorInfoResource = vvoServiceUseCases.getStopMonitorUseCase(
                     stop = stop,
                     time = LocalDateTime.now(),
                     limit = departureCount.intValue,
-                    )
+                )
+                when (stopMonitorInfoResource) {
+                    is Resource.Error -> {
+                        println("TOAST: " + stopMonitorInfoResource.message)
+                        emptyList()
+                    }
+                    is Resource.Success -> {
+                        stopMonitorInfoResource.data!!.departures
+                    }
+                }
             }
             delay(300)
             _isRefreshing.update { false }
@@ -58,11 +68,20 @@ class StopMonitorViewModel(
         departureCount.intValue = departureCount.intValue + 20
         viewModelScope.launch {
             _departures.update {
-                vvoServiceUseCases.getStopMonitorDeparturesUseCase(
+                val stopMonitorInfoResource = vvoServiceUseCases.getStopMonitorUseCase(
                     stop = stop,
                     time = LocalDateTime.now(),
                     limit = departureCount.intValue,
                 )
+                when (stopMonitorInfoResource) {
+                    is Resource.Error -> {
+                        println("TOAST: " + stopMonitorInfoResource.message)
+                        emptyList()
+                    }
+                    is Resource.Success -> {
+                        stopMonitorInfoResource.data!!.departures
+                    }
+                }
             }
         }
     }
