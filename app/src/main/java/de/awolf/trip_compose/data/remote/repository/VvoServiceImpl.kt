@@ -50,33 +50,32 @@ class VvoServiceImpl(
             )
         )
 
-        var result: StopMonitorResponseDto? = null
-        var errorMessage = ""
         try {
-            result = client.post {
+            val response = client.post {
                 url(HttpRoutes.STOP_MONITOR)
                 contentType(ContentType.Application.Json)
                 setBody(jsonBody)
-            }.body()
+            }.body<StopMonitorResponseDto>()
+
+            if (!response.responseStatus.isOk()) {
+                return Resource.Error(
+                    message = "API response bad status\ncode: " +  response.responseStatus.code + "\nmessage: " + response.responseStatus.message
+                )
+            }
+
+            return Resource.Success(response.toStopMonitorInfo())
+
         } catch (e: RedirectResponseException) {
             // 3xx - responses
-            println("Error: ${e.response.status.description}")
-            errorMessage = e.response.status.description
+            return Resource.Error("HTTP request failed with message: " + e.response.status.description)
         } catch (e: ClientRequestException) {
             // 4xx - responses
-            println("Error: ${e.response.status.description}")
-            errorMessage = e.response.status.description
+            return Resource.Error("HTTP request failed with message: " + e.response.status.description)
         } catch (e: ServerResponseException) {
             // 5xx - responses
-            println("Error: ${e.response.status.description}")
-            errorMessage = e.response.status.description
+            return Resource.Error("HTTP request failed with message: " + e.response.status.description)
         } catch (e: Exception) {
-            println("Error: ${e.message}")
-            errorMessage = "unknown error (most likely json parse error)"
-        }
-        return when (result == null) {
-            true -> Resource.Error(errorMessage)
-            false -> Resource.Success(result.toStopMonitorInfo())
+            return Resource.Error("unknown error (most likely json parse error)")
         }
     }
 
@@ -101,33 +100,38 @@ class VvoServiceImpl(
             )
         )
 
-        var result: StopFinderResponseDto? = null
-        var errorMessage = ""
         try {
-            result = client.post {
+            val response = client.post {
                 url(HttpRoutes.STOP_FINDER)
                 contentType(ContentType.Application.Json)
                 setBody(jsonBody)
-            }.body()
+            }.body<StopFinderResponseDto>()
+
+            if (response.pointStatus == "NotIdentified") {
+                return Resource.Error(
+                    message = "Stop could not be identified"
+                )
+            }
+
+            if (!response.responseStatus.isOk()) {
+                return Resource.Error(
+                    message = "API response bad status\ncode: " +  response.responseStatus.code + "\nmessage: " + response.responseStatus.message
+                )
+            }
+
+            return Resource.Success(response.toStopFinderInfo())
+
         } catch (e: RedirectResponseException) {
             // 3xx - responses
-            println("Error: ${e.response.status.description}")
-            errorMessage = e.response.status.description
+            return Resource.Error("HTTP request failed with message: " + e.response.status.description)
         } catch (e: ClientRequestException) {
             // 4xx - responses
-            println("Error: ${e.response.status.description}")
-            errorMessage = e.response.status.description
+            return Resource.Error("HTTP request failed with message: " + e.response.status.description)
         } catch (e: ServerResponseException) {
             // 5xx - responses
-            println("Error: ${e.response.status.description}")
-            errorMessage = e.response.status.description
+            return Resource.Error("HTTP request failed with message: " + e.response.status.description)
         } catch (e: Exception) {
-            println("Error: ${e.message}")
-            errorMessage = "unknown error (most likely json parse error)"
-        }
-        return when (result == null) {
-            true -> Resource.Error(errorMessage)
-            false -> Resource.Success(result.toStopFinderInfo())
+            return Resource.Error("unknown error (most likely json parse error)")
         }
     }
 }
