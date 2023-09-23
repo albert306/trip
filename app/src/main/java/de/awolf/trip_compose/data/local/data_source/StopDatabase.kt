@@ -4,11 +4,14 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import de.awolf.trip_compose.domain.models.Stop
 
-@Suppress("UNUSED")
 @Database(
     entities = [Stop::class],
     version = 1
 )
 abstract class StopDatabase: RoomDatabase() {
-    abstract val stopDao: StopDao
+    abstract val dao: StopDao
+
+    companion object {
+        const val DATABASE_NAME = "stops_db"
+    }
 }
