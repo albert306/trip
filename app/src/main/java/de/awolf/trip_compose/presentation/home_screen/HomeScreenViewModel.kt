@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import de.awolf.trip_compose.domain.models.Stop
-import de.awolf.trip_compose.domain.use_case.VvoServiceUseCases
+import de.awolf.trip_compose.domain.use_case.UseCases
 import de.awolf.trip_compose.domain.util.Resource
 import de.awolf.trip_compose.ui.Screen
 import kotlinx.coroutines.FlowPreview
@@ -21,7 +21,7 @@ import java.time.ZonedDateTime
 
 @Suppress("UNUSED")
 class HomeScreenViewModel(
-    private val vvoServiceUseCases: VvoServiceUseCases,
+    private val useCases: UseCases,
     private val navController: NavController
 ) : ViewModel() {
 
@@ -40,7 +40,7 @@ class HomeScreenViewModel(
         .debounce(100L)
         .onEach { _isSearching.update { true } }
         .combine(_recommendedStops) { text, _ ->
-            when (val recommendedStopsResource = vvoServiceUseCases.getRecommendedStopsUseCase(text)) {
+            when (val recommendedStopsResource = useCases.getRecommendedStopsUseCase(text)) {
                 is Resource.Error -> {
                     println("TOAST: " + recommendedStopsResource.message)
                     emptyList()
@@ -69,8 +69,13 @@ class HomeScreenViewModel(
             stop.id,
             stop.name,
             stop.region,
-            "false",
+            stop.isFavourite.toString(),
             ZonedDateTime.now().toEpochSecond().toString()
         ))
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun toggleFavouriteStop(stop: Stop) {
+
     }
 }

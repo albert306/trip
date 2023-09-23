@@ -44,8 +44,8 @@ fun HomeScreen(
             items(recommendedStops) { stop ->
                 StopView(
                     stop = stop,
-                    stopIsFavourite = false,
-                    onClick = { viewModel.startStopMonitor(stop) }
+                    onFavouriteStarClick = { viewModel.toggleFavouriteStop(stop) },
+                    onNameClick = { viewModel.startStopMonitor(stop) }
                 )
             }
         }

@@ -29,7 +29,7 @@ fun Navigation() {
             val homeScreenViewModel = viewModel<HomeScreenViewModel>(
                 factory = viewModelFactory {
                     HomeScreenViewModel(
-                        vvoServiceUseCases = MyApp.appModule.vvoServiceUseCases,
+                        useCases = MyApp.appModule.useCases,
                         navController = navController
                     )
                 }
@@ -69,7 +69,7 @@ fun Navigation() {
                             region = entry.arguments?.getString("stopRegion") ?: "Dresden",
                         ),
                         queriedTime = entry.arguments?.getLong("queriedTime") ?: 0L,
-                        vvoServiceUseCases = MyApp.appModule.vvoServiceUseCases
+                        useCases = MyApp.appModule.useCases
                     )
                 }
             )

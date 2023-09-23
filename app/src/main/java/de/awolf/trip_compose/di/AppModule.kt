@@ -1,17 +1,18 @@
 package de.awolf.trip_compose.di
 
 import android.content.Context
+import de.awolf.trip_compose.domain.repository.StopDatabaseRepository
 import de.awolf.trip_compose.domain.repository.VvoService
 import de.awolf.trip_compose.domain.use_case.GetRecommendedStopsUseCase
 import de.awolf.trip_compose.domain.use_case.GetStopMonitorUseCase
-import de.awolf.trip_compose.domain.use_case.VvoServiceUseCases
+import de.awolf.trip_compose.domain.use_case.UseCases
 
 interface AppModule {
     val vvoService: VvoService
-    val vvoServiceUseCases: VvoServiceUseCases
+    val stopDatabaseRepository: StopDatabaseRepository
+    val useCases: UseCases
 }
 
-@Suppress("UNUSED")
 class AppModuleImpl(
     private val appContext: Context
 ): AppModule {
@@ -20,10 +21,14 @@ class AppModuleImpl(
         VvoService.create()
     }
 
-    override val vvoServiceUseCases: VvoServiceUseCases by lazy {
-        VvoServiceUseCases(
-            GetRecommendedStopsUseCase(vvoService),
-            GetStopMonitorUseCase(vvoService)
+    override val stopDatabaseRepository: StopDatabaseRepository by lazy {
+        StopDatabaseRepository.create(appContext)
+    }
+
+    override val useCases: UseCases by lazy {
+        UseCases(
+            GetRecommendedStopsUseCase(vvoService, stopDatabaseRepository),
+            GetStopMonitorUseCase(vvoService),
         )
     }
 }

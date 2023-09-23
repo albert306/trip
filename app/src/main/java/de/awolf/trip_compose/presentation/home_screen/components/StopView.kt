@@ -31,7 +31,7 @@ private fun Preview() {
 //            modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            StopView(stop = Stop("33000028", "Haupbahnhof", "Dresden"), stopIsFavourite = false) {}
+            StopView(stop = Stop("33000028", "Haupbahnhof", "Dresden"), {}, {})
         }
     }
 }
@@ -39,14 +39,14 @@ private fun Preview() {
 @Composable
 fun StopView(
     stop: Stop,
-    stopIsFavourite: Boolean,
-    onClick: () -> Unit
+    onFavouriteStarClick: () -> Unit,
+    onNameClick: () -> Unit
 ) {
     // Default: no favourite
     var icon = painterResource(id = R.drawable.baseline_star_outline_24)
     var description = "outlined star"
 
-    if (stopIsFavourite) {
+    if (stop.isFavourite) {
         // if favourite
         icon = painterResource(id = R.drawable.baseline_star_24)
         description = "filled star"
@@ -61,22 +61,25 @@ fun StopView(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .width(40.dp)
+                .width(46.dp)
         ) {
             Icon(
                 painter = icon,
                 contentDescription = description,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(26.dp)
+                    .clickableWithoutRipple {
+                        onFavouriteStarClick()
+                    }
             )
         }
         Column(
             modifier = Modifier
                 .clickableWithoutRipple {
-                    println("stop ${stop.name} was clicked")
-                    onClick()
+                    onNameClick()
                 }
+                .weight(1f)
         ) {
             Text(
                 text = stop.name,
