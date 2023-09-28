@@ -15,8 +15,9 @@ class StopDatabaseRepositoryImpl(
         dao.deleteStop(stop)
     }
 
-    override suspend fun getStopById(id: String): Stop? {
-        return dao.getStopById(id)
+    override suspend fun isStopFavourite(id: String): Boolean {
+        val stop = dao.getStopById(id) ?: return false
+        return stop.isFavourite
     }
 
     override suspend fun getFavouriteStops(): List<Stop> {

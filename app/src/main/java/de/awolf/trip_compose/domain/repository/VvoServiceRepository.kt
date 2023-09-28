@@ -1,7 +1,7 @@
 package de.awolf.trip_compose.domain.repository
 
 import de.awolf.trip_compose.domain.models.Mode
-import de.awolf.trip_compose.data.remote.repository.VvoServiceImpl
+import de.awolf.trip_compose.data.remote.repository.VvoServiceRepositoryImpl
 import de.awolf.trip_compose.domain.models.StopFinderInfo
 import de.awolf.trip_compose.domain.models.StopMonitorInfo
 import de.awolf.trip_compose.domain.util.Resource
@@ -14,7 +14,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import java.time.LocalDateTime
 
-interface VvoService {
+interface VvoServiceRepository {
 
     suspend fun monitorStop(
         stopId: String,
@@ -35,8 +35,8 @@ interface VvoService {
 
 
     companion object {
-        fun create(): VvoService {
-            return VvoServiceImpl(
+        fun create(): VvoServiceRepository {
+            return VvoServiceRepositoryImpl(
                 client = HttpClient(Android) {
                     install(Logging) {
                         level = LogLevel.ALL

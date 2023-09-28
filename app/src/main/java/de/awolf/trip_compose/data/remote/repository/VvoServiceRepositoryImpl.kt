@@ -2,7 +2,7 @@ package de.awolf.trip_compose.data.remote.repository
 
 import de.awolf.trip_compose.data.remote.HttpRoutes
 import de.awolf.trip_compose.data.remote.dto.stop_finder.StopFinderResponseDto
-import de.awolf.trip_compose.domain.repository.VvoService
+import de.awolf.trip_compose.domain.repository.VvoServiceRepository
 import de.awolf.trip_compose.data.remote.dto.stop_monitor.StopMonitorResponseDto
 import de.awolf.trip_compose.data.remote.mappers.toStopFinderInfo
 import de.awolf.trip_compose.data.remote.mappers.toStopMonitorInfo
@@ -24,9 +24,9 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-class VvoServiceImpl(
+class VvoServiceRepositoryImpl(
     private val client: HttpClient
-) : VvoService {
+) : VvoServiceRepository {
 
     override suspend fun monitorStop(
         stopId: String,

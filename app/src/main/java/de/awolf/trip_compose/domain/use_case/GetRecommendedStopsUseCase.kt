@@ -2,11 +2,11 @@ package de.awolf.trip_compose.domain.use_case
 
 import de.awolf.trip_compose.domain.models.Stop
 import de.awolf.trip_compose.domain.repository.StopDatabaseRepository
-import de.awolf.trip_compose.domain.repository.VvoService
+import de.awolf.trip_compose.domain.repository.VvoServiceRepository
 import de.awolf.trip_compose.domain.util.Resource
 
 class GetRecommendedStopsUseCase(
-    private val vvoService: VvoService,
+    private val vvoServiceRepository: VvoServiceRepository,
     private val stopDatabaseRepository: StopDatabaseRepository
 ) {
 
@@ -15,17 +15,23 @@ class GetRecommendedStopsUseCase(
         return if (query.length < 3) {
             Resource.Success(getFavouriteStops())
         } else {
-            when (val response = vvoService.getStopByName(
+            when (val response = vvoServiceRepository.getStopByName(
                 query = query, // add optional query parameters
             )) {
                 is Resource.Error -> {
                     Resource.Error(
                         data = getFavouriteStops(),
-                        message = "HTTP request failed with message: " +  response.message!!
+                        message = response.message!!
                     )
                 }
                 is Resource.Success -> {
-                    Resource.Success(response.data!!.stops)
+                    // merge two with favourite stop information to show favourites in api response stoplist
+                    val stopListMarkedFavourites = response.data!!.stops.map { stop ->
+                        stop.isFavourite = stopDatabaseRepository.isStopFavourite(stop.id)
+                        stop
+                    }
+
+                    Resource.Success(stopListMarkedFavourites)
                 }
             }
         }
