@@ -11,6 +11,8 @@ interface StopDatabaseRepository {
 
     suspend fun deleteStop(stop: Stop)
 
+    suspend fun toggleFavouriteStopStatus(stop: Stop): Boolean
+
     suspend fun isStopFavourite(id: String): Boolean
 
     suspend fun getFavouriteStops(): List<Stop>

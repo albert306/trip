@@ -5,6 +5,7 @@ import de.awolf.trip_compose.domain.repository.StopDatabaseRepository
 import de.awolf.trip_compose.domain.repository.VvoServiceRepository
 import de.awolf.trip_compose.domain.use_case.GetRecommendedStopsUseCase
 import de.awolf.trip_compose.domain.use_case.GetStopMonitorUseCase
+import de.awolf.trip_compose.domain.use_case.ToggleAndReturnFavouriteStopStatusUseCase
 import de.awolf.trip_compose.domain.use_case.UseCases
 
 interface AppModule {
@@ -29,6 +30,7 @@ class AppModuleImpl(
         UseCases(
             GetRecommendedStopsUseCase(vvoServiceRepository, stopDatabaseRepository),
             GetStopMonitorUseCase(vvoServiceRepository),
+            ToggleAndReturnFavouriteStopStatusUseCase(stopDatabaseRepository)
         )
     }
 }

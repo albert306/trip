@@ -9,16 +9,17 @@ import de.awolf.trip_compose.domain.util.Resource
 import de.awolf.trip_compose.ui.Screen
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
+@OptIn(FlowPreview::class)
 @Suppress("UNUSED")
 class HomeScreenViewModel(
     private val useCases: UseCases,
@@ -35,27 +36,21 @@ class HomeScreenViewModel(
     val selectedTime = _selectedTime.asStateFlow()
 
     private val _recommendedStops = MutableStateFlow(listOf<Stop>())
-    @OptIn(FlowPreview::class)
-    val recommendedStops = _searchText
-        .debounce(100L)
-        .onEach { _isSearching.update { true } }
-        .combine(_recommendedStops) { text, _ ->
-            when (val recommendedStopsResource = useCases.getRecommendedStopsUseCase(text)) {
-                is Resource.Error -> {
-                    println("TOAST: " + recommendedStopsResource.message)
-                    emptyList()
-                }
-                is Resource.Success -> {
-                    recommendedStopsResource.data!!
-                }
+    val recommendedStops = _recommendedStops.asStateFlow()
+
+
+    init {
+        _searchText
+            .debounce(100L)
+            .onEach { _isSearching.update { true } }
+            .combine(_recommendedStops, ) { text, _ ->
+                setRecommendedStops(text)
             }
-        }
-        .onEach { _isSearching.update { false } }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            _recommendedStops.value
-        )
+            .onEach { _isSearching.update { false } }
+            .launchIn(
+                viewModelScope
+            )
+    }
 
 
     fun onSearchTextChange(text: String) {
@@ -74,8 +69,23 @@ class HomeScreenViewModel(
         ))
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun toggleFavouriteStop(stop: Stop) {
+        viewModelScope.launch {
+            useCases.toggleAndReturnFavouriteStopStatusUseCase(stop)
+            setRecommendedStops(searchText.value)
+        }
+    }
 
+    private suspend fun setRecommendedStops(query: String) {
+        when (val recommendedStopsResource = useCases.getRecommendedStopsUseCase(query)) {
+            is Resource.Error -> {
+                println("TOAST: " + recommendedStopsResource.message)
+                _recommendedStops.update { emptyList() }
+            }
+            is Resource.Success -> {
+                _recommendedStops.update { recommendedStopsResource.data!! }
+
+            }
+        }
     }
 }
