@@ -9,9 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 
-@Suppress("unused")
+@Suppress("UNUSED")
 private val LightColors = lightColorScheme(
     primary = Yellow,
     secondary = Yellow,
@@ -31,6 +30,7 @@ private val DarkColors = darkColorScheme(
     surface = LightGrey
 )
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -56,7 +56,7 @@ fun AppTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.surface.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+//            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
 

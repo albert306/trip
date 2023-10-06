@@ -1,5 +1,7 @@
 package de.awolf.trip_compose.ui
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -24,7 +26,19 @@ fun Navigation() {
         startDestination = Screen.HomeScreen.route,
     ) {
         composable(
-            route = Screen.HomeScreen.route
+            route = Screen.HomeScreen.route,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(200)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(200)
+                )
+            }
         ) {
             val homeScreenViewModel = viewModel<HomeScreenViewModel>(
                 factory = viewModelFactory {
@@ -58,7 +72,19 @@ fun Navigation() {
                 navArgument("queriedTime") {
                     type = NavType.LongType
                 }
-            )
+            ),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(200)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(200)
+                )
+            }
         ) { entry ->
             val stopMonitorViewModel = viewModel<StopMonitorViewModel>(
                 factory = viewModelFactory {

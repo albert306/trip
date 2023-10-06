@@ -29,6 +29,7 @@ fun HomeScreen(
             onSearchTextChange = viewModel::onSearchTextChange,
             onSearchButtonClick = { viewModel.startStopMonitor(recommendedStops.firstOrNull()) },
             modifier = Modifier
+                .height(100.dp)
                 .zIndex(2f)
                 .fillMaxWidth()
         )

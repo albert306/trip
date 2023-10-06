@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
@@ -37,7 +36,7 @@ import de.awolf.trip_compose.ui.theme.AppTheme
 
 @Preview(showBackground = true)
 @Composable
-private fun Preview() {
+private fun SearchCardPreview() {
     AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -50,6 +49,7 @@ private fun Preview() {
                     onSearchButtonClick = {},
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(110.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
             }
@@ -70,15 +70,15 @@ fun SearchCard(
         modifier = modifier
             .background(
                 color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(0.dp, 0.dp, 24.dp, 24.dp)
+                shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 20.dp)
             )
-            .padding(12.dp)
+            .padding(top = 8.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(40.dp)
+                .height(38.dp)
         ) {
             BasicTextField(
                 value = searchText,
@@ -117,17 +117,20 @@ fun SearchCard(
                 size = 26.dp
             )
         }
+
+
         Box(
-            contentAlignment = Alignment.CenterEnd,
             modifier = Modifier
-                .fillMaxWidth()
+                .padding(4.dp)
+                .fillMaxSize()
         ) {
             Button(
                 onClick = { onSearchButtonClick() },
                 contentPadding = PaddingValues(0.dp),
+                shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
-                    .size(width = 100.dp, height = 30.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .size(width = 110.dp, height = 30.dp)
+                    .align(Alignment.BottomEnd)
             ) {
                 Icon(
                     imageVector = Icons.Default.Search,

@@ -40,6 +40,7 @@ fun StopInfoCard(
             )
             .padding(12.dp)
     ) {
+        Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = stop.name,
             fontSize = 22.sp,
@@ -49,7 +50,7 @@ fun StopInfoCard(
             modifier = Modifier
         )
         AnimatedVisibility(
-            visible = isStopInfoCardExpanded
+            visible = isStopInfoCardExpanded,
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             Row(
