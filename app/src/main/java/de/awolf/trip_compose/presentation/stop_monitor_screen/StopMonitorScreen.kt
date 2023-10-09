@@ -1,5 +1,6 @@
 package de.awolf.trip_compose.presentation.stop_monitor_screen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,7 @@ import de.awolf.trip_compose.presentation.stop_monitor_screen.components.Shimmer
 import de.awolf.trip_compose.presentation.stop_monitor_screen.components.StopInfoCard
 import java.time.LocalDateTime
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StopMonitorScreen(
     viewModel: StopMonitorViewModel,
@@ -80,8 +82,11 @@ fun StopMonitorScreen(
                 item {
                     Spacer(modifier = Modifier.height(6.dp))
                 }
-                items(departures) { departure ->
-                    DepartureView(departure)
+                items(departures, key = { it.id + "||" + it.dlId +  "||" + it.sheduledTime.toString() }) { departure ->
+                    DepartureView(
+                        departure = departure,
+                        modifier = Modifier.animateItemPlacement()
+                    )
                 }
                 if (!isRefreshing) {
                     items(3) {

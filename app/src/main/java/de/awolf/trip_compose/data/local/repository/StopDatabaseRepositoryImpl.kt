@@ -17,7 +17,13 @@ class StopDatabaseRepositoryImpl(
 
     override suspend fun toggleFavouriteStopStatus(stop: Stop): Boolean {
         val isCurrentlyFavourite = isStopFavourite(stop.id)
-        dao.insertStop(Stop(id = stop.id, name = stop.name, region = stop.region, isFavourite = !isCurrentlyFavourite))
+        dao.insertStop(Stop(
+            id = stop.id,
+            name = stop.name,
+            region = stop.region,
+            isFavourite = !isCurrentlyFavourite,
+            rankingFavourite = stop.rankingFavourite
+        ))
         return isStopFavourite(stop.id)
     }
 

@@ -52,8 +52,8 @@ private fun Preview() {
                 ZoneId.systemDefault()
             )
             Column() {
-                DepartureView(Departure(id = "", lineNumber = "360", lineDirection = "Prohlis", mode = Mode.PLUSBUS, sheduledTime = sheduledTime, realTime = realTime, departureState = Departure.DepartureState.DELAYED, platform = Platform("track", "8"), diva = Diva("9", "vvo"), routeChanges = emptyList()))
-                DepartureView(Departure(id = "", lineNumber = "9", lineDirection = "Prohlis", mode = Mode.TRAM, sheduledTime = sheduledTime, realTime = realTime, departureState = Departure.DepartureState.DELAYED, platform = Platform("track", "8"), diva = Diva("9", "vvo"), routeChanges = emptyList()))
+                DepartureView(Departure(id = "", dlId = "", lineNumber = "360", lineDirection = "Prohlis", mode = Mode.PLUSBUS, sheduledTime = sheduledTime, realTime = realTime, departureState = Departure.DepartureState.DELAYED, platform = Platform("track", "8"), diva = Diva("9", "vvo"), routeChanges = emptyList()))
+                DepartureView(Departure(id = "", dlId = "", lineNumber = "9", lineDirection = "Prohlis", mode = Mode.TRAM, sheduledTime = sheduledTime, realTime = realTime, departureState = Departure.DepartureState.DELAYED, platform = Platform("track", "8"), diva = Diva("9", "vvo"), routeChanges = emptyList()))
             }
         }
     }
@@ -61,11 +61,12 @@ private fun Preview() {
 
 @Composable
 fun DepartureView(
-    departure: Departure
+    departure: Departure,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
     ) {
 

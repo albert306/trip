@@ -40,7 +40,8 @@ private fun Preview() {
 fun StopView(
     stop: Stop,
     onFavouriteStarClick: () -> Unit,
-    onNameClick: () -> Unit
+    onNameClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     // Default: no favourite
     var icon = painterResource(id = R.drawable.baseline_star_outline_24)
@@ -54,7 +55,7 @@ fun StopView(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
     ) {
 

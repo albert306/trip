@@ -10,4 +10,5 @@ data class Stop(
     val name: String,
     val region: String = "Dresden",
     var isFavourite: Boolean = false,
+    var rankingFavourite: Int = Int.MAX_VALUE,
 )

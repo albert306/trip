@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 data class Departure(
     val id: String,
+    val dlId: String?,
     val lineNumber: String,
     val lineDirection: String,
     val platform: Platform?,

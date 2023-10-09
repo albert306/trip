@@ -22,6 +22,7 @@ fun StopMonitorResponseDto.toStopMonitorInfo(): StopMonitorInfo {
 fun DepartureDto.toDeparture(): Departure {
     return Departure(
         id = id,
+        dlId = dlId,
         lineNumber = lineNumber,
         lineDirection = lineDirection,
         platform = platform,

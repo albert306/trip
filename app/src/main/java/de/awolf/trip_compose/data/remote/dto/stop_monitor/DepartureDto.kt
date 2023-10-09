@@ -10,6 +10,7 @@ import java.time.LocalDateTime
 @Serializable
 data class DepartureDto(
     @SerialName("Id") val id: String,
+    @SerialName("DlId") val dlId: String? = null,
     @SerialName("LineName") val lineNumber: String,
     @SerialName("Direction") val lineDirection: String,
     @SerialName("Platform") val platform: Platform? = null,

@@ -19,6 +19,6 @@ interface StopDao {
     @Query("SELECT * FROM stop WHERE id = :id")
     suspend fun getStopById(id: String): Stop?
 
-    @Query("SELECT * FROM stop WHERE isFavourite = 1")
+    @Query("SELECT * FROM stop WHERE isFavourite = 1 ORDER BY rankingFavourite ASC")
     suspend fun getFavouriteStops(): List<Stop>
 }
