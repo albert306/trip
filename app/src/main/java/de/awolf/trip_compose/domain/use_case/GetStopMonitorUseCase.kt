@@ -22,18 +22,8 @@ class GetStopMonitorUseCase(
                 )
             }
             is Resource.Success -> {
-                checkResponseStatus(responseData = response.data!!)
+                Resource.Success(response.data!!)
             }
         }
-    }
-
-    private fun checkResponseStatus(responseData: StopMonitorInfo): Resource<StopMonitorInfo> {
-        if (!responseData.responseStatus.isOk()) {
-            return Resource.Error(
-                message = "API response bad status\ncode: " +  responseData.responseStatus.code + "\nmessage: " + responseData.responseStatus.message
-            )
-        }
-
-        return Resource.Success(responseData)
     }
 }
