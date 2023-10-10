@@ -3,11 +3,13 @@ package de.awolf.trip_compose.data.remote.mappers
 import de.awolf.trip_compose.data.remote.dto.stop_monitor.DepartureDto
 import de.awolf.trip_compose.data.remote.dto.stop_monitor.StopMonitorResponseDto
 import de.awolf.trip_compose.data.remote.dto.stop_finder.StopFinderResponseDto
+import de.awolf.trip_compose.data.remote.dto.stop_monitor.StopScheduleItemDto
 import de.awolf.trip_compose.domain.models.Departure
 import de.awolf.trip_compose.domain.models.StopMonitorInfo
 import de.awolf.trip_compose.domain.models.Mode
 import de.awolf.trip_compose.domain.models.Stop
 import de.awolf.trip_compose.domain.models.StopFinderInfo
+import de.awolf.trip_compose.domain.models.StopScheduleItem
 
 fun StopMonitorResponseDto.toStopMonitorInfo(): StopMonitorInfo {
     return StopMonitorInfo(
@@ -51,5 +53,16 @@ fun StopFinderResponseDto.toStopFinderInfo(): StopFinderInfo {
             Stop(id, name, region)
         },
         expirationTime = expirationTime,
+    )
+}
+
+fun StopScheduleItemDto.toStopScheduleItem(): StopScheduleItem {
+    return StopScheduleItem(
+        stopId = stopId,
+        stopRegion = stopRegion,
+        stopName = stopName,
+        shedulePosition = shedulePosition,
+        platform = platform,
+        arrivalTime = arrivalTime
     )
 }

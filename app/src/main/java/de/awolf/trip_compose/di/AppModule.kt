@@ -3,6 +3,7 @@ package de.awolf.trip_compose.di
 import android.content.Context
 import de.awolf.trip_compose.domain.repository.StopDatabaseRepository
 import de.awolf.trip_compose.domain.repository.VvoServiceRepository
+import de.awolf.trip_compose.domain.use_case.GetDetailedStopSchedule
 import de.awolf.trip_compose.domain.use_case.GetRecommendedStopsUseCase
 import de.awolf.trip_compose.domain.use_case.GetStopMonitorUseCase
 import de.awolf.trip_compose.domain.use_case.ToggleAndReturnFavouriteStopStatusUseCase
@@ -30,6 +31,7 @@ class AppModuleImpl(
         UseCases(
             GetRecommendedStopsUseCase(vvoServiceRepository, stopDatabaseRepository),
             GetStopMonitorUseCase(vvoServiceRepository),
+            GetDetailedStopSchedule(vvoServiceRepository),
             ToggleAndReturnFavouriteStopStatusUseCase(stopDatabaseRepository)
         )
     }

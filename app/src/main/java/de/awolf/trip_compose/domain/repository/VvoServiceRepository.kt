@@ -4,6 +4,7 @@ import de.awolf.trip_compose.domain.models.Mode
 import de.awolf.trip_compose.data.remote.repository.VvoServiceRepositoryImpl
 import de.awolf.trip_compose.domain.models.StopFinderInfo
 import de.awolf.trip_compose.domain.models.StopMonitorInfo
+import de.awolf.trip_compose.domain.models.StopScheduleItem
 import de.awolf.trip_compose.domain.util.Resource
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -33,6 +34,11 @@ interface VvoServiceRepository {
         stopShortcuts: Boolean = false
     ): Resource<StopFinderInfo>
 
+    suspend fun getDetailedStopSchedule(
+        stopId: String,
+        departureId: String,
+        time: LocalDateTime
+    ): Resource<List<StopScheduleItem>>
 
     companion object {
         fun create(): VvoServiceRepository {
