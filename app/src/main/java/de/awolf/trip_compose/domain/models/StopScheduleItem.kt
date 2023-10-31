@@ -4,9 +4,10 @@ import java.time.LocalDateTime
 
 data class StopScheduleItem(
     val stopId: String,
+    val dlId: String,
     val stopRegion: String,
     val stopName: String,
     val shedulePosition: String,
-    val platform: Platform,
+    val platform: Platform?,
     val arrivalTime: LocalDateTime
 )

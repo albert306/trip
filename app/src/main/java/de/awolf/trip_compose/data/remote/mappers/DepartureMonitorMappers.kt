@@ -59,6 +59,7 @@ fun StopFinderResponseDto.toStopFinderInfo(): StopFinderInfo {
 fun StopScheduleItemDto.toStopScheduleItem(): StopScheduleItem {
     return StopScheduleItem(
         stopId = stopId,
+        dlId = dlId,
         stopRegion = stopRegion,
         stopName = stopName,
         shedulePosition = shedulePosition,

@@ -17,6 +17,8 @@ data class Departure(
     val departureState: DepartureState,
     val routeChanges: List<String>,
     val diva: Diva?,
+    var isShowingDetailedStopSchedule: Boolean = false,
+    var detailedStopSchedule: List<StopScheduleItem>? = null,
 ) : Comparable<Departure> {
 
     enum class DepartureState(val rawValue: String = "Unknown") {

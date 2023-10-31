@@ -85,4 +85,34 @@ class StopMonitorViewModel(
             }
         }
     }
+
+    fun toggleVisibilityDetailedStopSchedule(departureIndex: Int) {
+        viewModelScope.launch {
+            _departures.update { currentDepartures ->
+                when (currentDepartures[departureIndex].isShowingDetailedStopSchedule) {
+                    true -> {
+                        currentDepartures[departureIndex].isShowingDetailedStopSchedule = false
+                    }
+                    false -> {
+                        currentDepartures[departureIndex].isShowingDetailedStopSchedule = true
+                        val detailedStopScheduleResource = useCases.getDetailedStopSchedule(
+                            departure = currentDepartures[departureIndex],
+                            stopId = stop.id
+                        )
+                        when (detailedStopScheduleResource) {
+                            is Resource.Error -> {
+                                println("TOAST: " + detailedStopScheduleResource.message)
+                                currentDepartures[departureIndex].detailedStopSchedule = null
+                            }
+
+                            is Resource.Success -> {
+                                currentDepartures[departureIndex].detailedStopSchedule = detailedStopScheduleResource.data!!.filter { it.shedulePosition == "Next" }
+                            }
+                        }
+                    }
+                }
+                currentDepartures
+            }
+        }
+    }
 }

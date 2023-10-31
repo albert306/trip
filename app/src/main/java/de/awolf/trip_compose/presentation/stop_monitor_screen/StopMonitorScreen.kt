@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -82,9 +82,13 @@ fun StopMonitorScreen(
                 item {
                     Spacer(modifier = Modifier.height(6.dp))
                 }
-                items(departures, key = { it.id + "||" + it.dlId +  "||" + it.sheduledTime.toString() }) { departure ->
+                itemsIndexed(departures, key = { _, departure -> departure.id + "||" + departure.dlId +  "||" + departure.sheduledTime.toString() }) { index, departure ->
                     DepartureView(
                         departure = departure,
+                        onClick = {
+                            println("clicked on departure: ${departure.lineDirection}")
+                            viewModel.toggleVisibilityDetailedStopSchedule(index)
+                        },
                         modifier = Modifier.animateItemPlacement()
                     )
                 }
