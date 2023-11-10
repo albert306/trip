@@ -103,7 +103,10 @@ fun DepartureView(
                     fontWeight = FontWeight(500),
                     modifier = Modifier
                         .padding(horizontal = 8.dp, vertical = 0.dp)
-                        .background(color = departure.mode.getColor(), shape = RoundedCornerShape(2.dp))
+                        .background(
+                            color = departure.mode.getColor(),
+                            shape = RoundedCornerShape(2.dp)
+                        )
                         .padding(horizontal = 4.dp, vertical = 0.dp)
                 )
             }
@@ -186,7 +189,7 @@ fun DepartureView(
         AnimatedVisibility(visible = departure.isShowingDetailedStopSchedule && departure.detailedStopSchedule != null) {
             Column {
                 for (detailedStop in departure.detailedStopSchedule!!) {
-                    Text(text = detailedStop.stopName, Modifier.padding(start = 58.dp))
+                    StopScheduleItemView(stopScheduleItem = detailedStop)
                 }
             }
         }

@@ -82,11 +82,10 @@ fun StopMonitorScreen(
                 item {
                     Spacer(modifier = Modifier.height(6.dp))
                 }
-                itemsIndexed(departures, key = { _, departure -> departure.id + "||" + departure.dlId +  "||" + departure.sheduledTime.toString() }) { index, departure ->
+                itemsIndexed(departures, key = { _, departure -> departure.id + "||" + departure.lineDirection + "||" + departure.sheduledTime.toString() + "||"}) { index, departure ->
                     DepartureView(
                         departure = departure,
                         onClick = {
-                            println("clicked on departure: ${departure.lineDirection}")
                             viewModel.toggleVisibilityDetailedStopSchedule(index)
                         },
                         modifier = Modifier.animateItemPlacement()
