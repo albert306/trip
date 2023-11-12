@@ -79,8 +79,7 @@ fun DepartureView(
             .fillMaxWidth()
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .clickableWithoutRipple {
                     onClick()
@@ -94,6 +93,7 @@ fun DepartureView(
                         min = 58.dp,
                         max = 100.dp
                     )
+                    .padding(top = 8.dp)
             ) {
                 Text(
                     text = departure.lineNumber,
@@ -127,8 +127,12 @@ fun DepartureView(
                         fontWeight = FontWeight(400),
                         modifier = Modifier.weight(1f),
                     )
+                    var etaText = departure.getETA().toString() + " min"
+                    if (departure.getETA() > 120) {
+                        etaText = ""
+                    }
                     Text(
-                        text = departure.getETA().toString() + " min",
+                        text = etaText,
                         textAlign = TextAlign.End,
                         fontSize = 18.sp,
                         color = MaterialTheme.colorScheme.onBackground,
@@ -184,12 +188,39 @@ fun DepartureView(
                         modifier = Modifier.weight(1f),
                     )
                 }
-            }
-        }
-        AnimatedVisibility(visible = departure.isShowingDetailedStopSchedule && departure.detailedStopSchedule != null) {
-            Column {
-                for (detailedStop in departure.detailedStopSchedule!!) {
-                    StopScheduleItemView(stopScheduleItem = detailedStop)
+                AnimatedVisibility(visible = departure.isShowingDetailedStopSchedule) {
+
+                    Column {
+
+                        if (departure.platform != null) {
+                            Text(
+                                text = departure.platform.type + " " +  departure.platform.name,
+                                textAlign = TextAlign.End,
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                maxLines = 1,
+                                fontWeight = FontWeight(300),
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                        }
+
+                        if (departure.detailedStopSchedule != null) {
+                            Text(
+                                text = "Upcoming Stations:",
+                                fontSize = 18.sp,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                maxLines = 1,
+                                fontWeight = FontWeight(400),
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                            for (detailedStop in departure.detailedStopSchedule!!) {
+                                StopScheduleItemView(
+                                    stopScheduleItem = detailedStop,
+                                    modifier = Modifier.padding(start = 8.dp)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
