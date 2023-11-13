@@ -1,12 +1,16 @@
 package de.awolf.trip_compose.presentation.stop_monitor_screen.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -58,22 +62,34 @@ fun StopScheduleItemView(
 
         Text(
             text = stopScheduleItem.arrivalTime.format(DateTimeFormatter.ofPattern("HH:mm")),
-            textAlign = TextAlign.End,
+            textAlign = TextAlign.Center,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             fontWeight = FontWeight(200),
-            modifier = Modifier.width(50.dp)
+            modifier = Modifier.width(42.dp)
         )
-
-        Divider(
-            color = Color.Gray,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(horizontal = 8.dp)
-                .width(1.dp)
-        )
-
+                .padding(start = 6.dp, end = 8.dp)
+        ) {
+            Divider(
+                color = Color.Gray,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .size(4.dp)
+                    .background(
+                        color = Color.Gray,
+                        shape = CircleShape
+                    )
+            )
+        }
         Text(
             text = stopScheduleItem.stopName,
             fontSize = 16.sp,

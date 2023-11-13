@@ -24,8 +24,16 @@ class GetDetailedStopSchedule(
                 )
             }
             is Resource.Success -> {
-                Resource.Success(response.data!!)
+                Resource.Success(removeCityPrefix(response.data!!))
             }
+        }
+    }
+
+    private fun removeCityPrefix(stops: List<StopScheduleItem>): List<StopScheduleItem> {
+        return stops.map { stop ->
+            stop.copy(
+                stopName = stop.stopName.removePrefix("Dresden ")
+            )
         }
     }
 }
