@@ -3,17 +3,24 @@ package de.awolf.trip_compose.presentation.stop_monitor_screen.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.awolf.trip_compose.domain.models.Stop
@@ -27,6 +34,7 @@ fun StopInfoCard(
     queriedTime: LocalDateTime,
     isStopInfoCardExpanded: Boolean,
     expandStopInfo: () -> Unit,
+    onCloseButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -41,14 +49,31 @@ fun StopInfoCard(
             .padding(12.dp)
     ) {
         Spacer(modifier = Modifier.height(2.dp))
-        Text(
-            text = stop.name,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.onBackground,
-            maxLines = 1,
-            fontWeight = FontWeight(400),
-            modifier = Modifier
-        )
+        Row {
+            Text(
+                text = stop.name,
+                fontSize = 22.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontWeight = FontWeight(400),
+                modifier = Modifier
+                    .weight(1f)
+            )
+            TextButton(
+                onClick = { onCloseButtonClick() },
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .size(26.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "close StopMonitor",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
+        }
         AnimatedVisibility(
             visible = isStopInfoCardExpanded,
         ) {

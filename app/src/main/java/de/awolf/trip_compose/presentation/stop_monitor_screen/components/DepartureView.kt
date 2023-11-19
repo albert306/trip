@@ -188,8 +188,9 @@ fun DepartureView(
                     )
                 }
                 AnimatedVisibility(visible = departure.isShowingDetailedStopSchedule && departure.platform != null) {
+                    if (departure.platform == null) return@AnimatedVisibility
                     Text(
-                        text = departure.platform!!.type + " " +  departure.platform.name,
+                        text = departure.platform.type + " " +  departure.platform.name,
 //                                textAlign = TextAlign.End,
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onBackground,
@@ -201,6 +202,7 @@ fun DepartureView(
             }
         }
         AnimatedVisibility(visible = departure.isShowingDetailedStopSchedule && departure.detailedStopSchedule != null) {
+            if (departure.detailedStopSchedule == null) return@AnimatedVisibility
             Column (
                 modifier = Modifier
                     .padding(start = 4.dp)

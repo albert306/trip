@@ -3,6 +3,7 @@ package de.awolf.trip_compose.presentation.stop_monitor_screen
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import de.awolf.trip_compose.domain.models.Departure
 import de.awolf.trip_compose.domain.models.Stop
 import de.awolf.trip_compose.domain.use_case.UseCases
@@ -18,7 +19,8 @@ import java.time.LocalDateTime
 class StopMonitorViewModel(
     val stop: Stop,
     private val queriedTime: Long,
-    private val useCases: UseCases
+    private val useCases: UseCases,
+    private val navController: NavController
 ) : ViewModel() {
 
     private val _isStopInfoCardExpanded = MutableStateFlow(false)
@@ -38,6 +40,10 @@ class StopMonitorViewModel(
 
     fun expandStopInfo() {
         _isStopInfoCardExpanded.value = !_isStopInfoCardExpanded.value
+    }
+
+    fun close() {
+        navController.popBackStack()
     }
 
     fun updateDepartures() {

@@ -48,6 +48,7 @@ fun StopMonitorScreen(
             queriedTime = LocalDateTime.now(), //TODO(pass actual queried time)
             isStopInfoCardExpanded = isStopInfoCardExpanded,
             expandStopInfo = viewModel::expandStopInfo,
+            onCloseButtonClick = viewModel::close,
             modifier = Modifier.zIndex(1f)
         )
 

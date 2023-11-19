@@ -16,12 +16,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -112,10 +114,19 @@ fun SearchCard(
                 modifier = Modifier
                     .weight(1f)
             )
-            DeleteTextButton(
+            TextButton(
                 onClick = { onSearchTextChange("") },
-                size = 26.dp
-            )
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .size(26.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "delete text",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
         }
 
 

@@ -95,7 +95,8 @@ fun Navigation() {
                             region = entry.arguments?.getString("stopRegion") ?: "Dresden",
                         ),
                         queriedTime = entry.arguments?.getLong("queriedTime") ?: 0L,
-                        useCases = MyApp.appModule.useCases
+                        useCases = MyApp.appModule.useCases,
+                        navController = navController
                     )
                 }
             )

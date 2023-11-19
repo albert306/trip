@@ -20,20 +20,20 @@ class GetDetailedStopSchedule(
         )) {
             is Resource.Error -> {
                 Resource.Error(
-                    message = "HTTP request failed with message: " +  response.message!!
+                    message = "HTTP request failed with message: " + response.message!!
                 )
             }
-            is Resource.Success -> {
-                Resource.Success(removeCityPrefix(response.data!!))
-            }
-        }
-    }
 
-    private fun removeCityPrefix(stops: List<StopScheduleItem>): List<StopScheduleItem> {
-        return stops.map { stop ->
-            stop.copy(
-                stopName = stop.stopName.removePrefix("Dresden ")
-            )
+            is Resource.Success -> {
+                val delay = departure.getDelay()
+
+                Resource.Success(response.data!!.map {
+                    it.copy(
+                        stopName = it.stopName.removePrefix("Dresden "),
+                        arrivalTime = it.arrivalTime.plusMinutes(delay)
+                    )
+                })
+            }
         }
     }
 }
